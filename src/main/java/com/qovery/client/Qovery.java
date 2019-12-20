@@ -62,7 +62,11 @@ public class Qovery {
             return null;
         }
 
-        String b64JSON = System.getProperty(environmentVariableContent);
+        String b64JSON = System.getenv(environmentVariableContent);
+        if (b64JSON == null || b64JSON.isEmpty()) {
+            return null;
+        }
+
         String jsonString = new String(Base64.getDecoder().decode(b64JSON));
         return Json.parse(jsonString);
     }

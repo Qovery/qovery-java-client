@@ -40,62 +40,44 @@ public class QoveryTest {
     }
 
     @Test
-    public void loadConfigurationWithEmptyConstructor() {
-        Qovery qovery = new Qovery();
-        Assert.assertNotNull(qovery.getConfiguration());
-    }
-
-    @Test
-    public void loadConfigurationFromFileWithOverride() {
-        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE);
-        Assert.assertNotNull(qovery.getConfiguration());
-    }
-
-    @Test
     public void loadConfigurationFromFile() {
         Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertNotNull(qovery.getConfiguration());
     }
 
     @Test
-    public void loadConfigurationFromEnvironmentVariable() {
-        Qovery qovery = new Qovery();
-        Assert.assertNotNull(qovery.getConfiguration());
-    }
-
-    @Test
     public void loadConfigurationFromEnvironmentVariableInParameters() {
-        Qovery qovery = new Qovery("QOVERY_JSON_B64");
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertNotNull(qovery.getConfiguration());
     }
 
     @Test
     public void isProductionTrue() {
-        Qovery qovery = new Qovery();
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertTrue(qovery.isProduction());
     }
 
     @Test
     public void isBranchNameMaster() {
-        Qovery qovery = new Qovery();
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertEquals(qovery.getBranchName(), "master");
     }
 
     @Test
     public void getDatabaseConfigurationByName() {
-        Qovery qovery = new Qovery();
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertNotNull(qovery.getDatabaseConfiguration("my-pql"));
     }
 
     @Test
     public void databaseConfigurationEqualsNull() {
-        Qovery qovery = new Qovery();
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertNull(qovery.getDatabaseConfiguration("not-existing"));
     }
 
     @Test
     public void listDatabaseConfiguration() {
-        Qovery qovery = new Qovery();
+        Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertEquals(qovery.listDatabaseConfiguration().count(), 1);
     }
 
