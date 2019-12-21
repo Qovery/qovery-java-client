@@ -40,6 +40,13 @@ public class QoveryTest {
     }
 
     @Test
+    public void loadConfigurationFromBadFile() {
+        Qovery qovery = new Qovery(new File(""), false);
+        Assert.assertNull(qovery.getConfiguration());
+        Assert.assertNull(qovery.getDatabaseConfiguration("toto"));
+    }
+
+    @Test
     public void loadConfigurationFromFile() {
         Qovery qovery = new Qovery(LOCAL_CONFIGURATION_FILE, false);
         Assert.assertNotNull(qovery.getConfiguration());

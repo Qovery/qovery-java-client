@@ -75,24 +75,34 @@ public class Qovery {
         return configuration;
     }
 
-    public DatabaseConfiguration getDatabaseConfiguration(String name) {
-        Iterator<JsonValue> databasesIterator = configuration.asObject().get("databases").asArray().iterator();
-        Iterable<JsonValue> databasesIterable = () -> databasesIterator;
-
-        return StreamSupport.stream(databasesIterable.spliterator(), false)
-                .filter(v -> v.asObject().getString("name", null).equals(name))
-                .findFirst()
-                .map(DatabaseConfiguration::new)
-                .orElse(null);
-
-    }
-
     public Stream<DatabaseConfiguration> listDatabaseConfiguration() {
-        Iterator<JsonValue> databasesIterator = configuration.asObject().get("databases").asArray().iterator();
+        if (configuration == null) {
+            return null;
+        }
+
+        JsonValue databasesJsonValue = configuration.asObject().get("databases");
+        if (databasesJsonValue == null) {
+            return null;
+        }
+
+        Iterator<JsonValue> databasesIterator = databasesJsonValue.asArray().iterator();
         Iterable<JsonValue> databasesIterable = () -> databasesIterator;
 
         return StreamSupport.stream(databasesIterable.spliterator(), false)
                 .map(DatabaseConfiguration::new);
+    }
+
+    public DatabaseConfiguration getDatabaseConfiguration(String name) {
+        Stream<DatabaseConfiguration> databasesConfiguration = listDatabaseConfiguration();
+        if (databasesConfiguration == null) {
+            return null;
+        }
+
+        return databasesConfiguration
+                .filter(v -> v.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+
     }
 
     public boolean isProduction() {
