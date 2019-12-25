@@ -33,9 +33,9 @@ public class Qovery {
     }
 
     public Qovery(File configurationFile, boolean isEnvironmentVariableOverride) {
-        this.configuration = getConfiguration(ENV_JSON_B64);
+        this.configuration = getConfiguration(configurationFile);
         if (this.configuration == null || isEnvironmentVariableOverride) {
-            this.configuration = getConfiguration(configurationFile);
+            this.configuration = getConfiguration(ENV_JSON_B64);
         }
     }
 
