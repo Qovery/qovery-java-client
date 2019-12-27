@@ -32,9 +32,9 @@ public class Qovery {
         this(configurationFile, true);
     }
 
-    public Qovery(File configurationFile, boolean isEnvironmentVariableOverride) {
+    public Qovery(File configurationFile, boolean overrideWithEnvironmentVariable) {
         this.configuration = getConfiguration(configurationFile);
-        if (this.configuration == null || isEnvironmentVariableOverride) {
+        if (this.configuration == null || overrideWithEnvironmentVariable) {
             this.configuration = getConfiguration(ENV_JSON_B64);
         }
     }
@@ -57,12 +57,12 @@ public class Qovery {
         return null;
     }
 
-    private JsonValue getConfiguration(String environmentVariableContent) {
-        if (environmentVariableContent == null || environmentVariableContent.isEmpty()) {
+    private JsonValue getConfiguration(String environmentVariable) {
+        if (environmentVariable == null || environmentVariable.isEmpty()) {
             return null;
         }
 
-        String b64JSON = System.getenv(environmentVariableContent);
+        String b64JSON = System.getenv(environmentVariable);
         if (b64JSON == null || b64JSON.isEmpty()) {
             return null;
         }
@@ -106,7 +106,12 @@ public class Qovery {
     }
 
     public boolean isProduction() {
-        return System.getProperty(ENV_IS_PRODUCTION).toLowerCase().equals("true");
+        String isProductionStr = System.getProperty(ENV_IS_PRODUCTION);
+        if (isProductionStr == null || isProductionStr.isEmpty()) {
+            return false;
+        }
+
+        return isProductionStr.toLowerCase().equals("true");
     }
 
     public String getBranchName() {
